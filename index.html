@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MineX PRO</title>
+
+<style>
+body{
+margin:0;
+font-family:Arial;
+background:linear-gradient(135deg,#0b0f1a,#101b33);
+color:white;
+text-align:center;
+}
+
+.container{
+max-width:500px;
+margin:auto;
+padding:20px;
+}
+
+.card{
+background:rgba(255,255,255,0.05);
+padding:15px;
+margin:10px 0;
+border-radius:15px;
+backdrop-filter:blur(10px);
+box-shadow:0 0 15px rgba(0,255,200,0.1);
+}
+
+h1{
+color:#00ffd5;
+}
+
+.stat{
+font-size:18px;
+margin:5px;
+}
+
+button{
+width:100%;
+padding:14px;
+margin:8px 0;
+border:none;
+border-radius:12px;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+transition:0.2s;
+}
+
+.mine{
+background:#00ffd5;
+}
+
+.upgrade{
+background:#ffd000;
+}
+
+.wallet{
+background:#00aaff;
+}
+
+.redeem{
+background:#ff4d6d;
+}
+
+.energy{
+background:#7cff6b;
+}
+
+button:hover{
+transform:scale(1.03);
+opacity:0.9;
+}
+
+.log{
+font-size:14px;
+opacity:0.8;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>⛏️ MineX PRO</h1>
+
+<div class="card">
+<div class="stat">💎 MINEX: <span id="minex">0</span></div>
+<div class="stat">👛 Wallet: <span id="wallet">0</span></div>
+<div class="stat">⚡ Energía: <span id="energy">100</span></div>
+<div class="stat">⛏️ Pico Nivel: <span id="pick">1</span></div>
+</div>
+
+<div class="card">
+<p class="log" id="log">Bienvenido a MineX 🚀</p>
+</div>
+
+<div class="card">
+
+<button class="mine" onclick="mine()">⛏️ MINAR</button>
+
+<button class="upgrade" onclick="upgrade()">🔧 MEJORAR PICO (500)</button>
+
+<button class="wallet" onclick="convert()">💰 CONVERTIR 1000 → WALLET</button>
+
+<button class="redeem" onclick="redeem()">🎁 CANJEAR (10 WALLET)</button>
+
+<button class="energy" onclick="energy()">⚡ RECARGAR ENERGÍA</button>
+
+</div>
+
+</div>
+
+<script>
+
+let minex = localStorage.getItem("minex") || 0;
+let wallet = localStorage.getItem("wallet") || 0;
+let energy = localStorage.getItem("energy") || 100;
+let pick = localStorage.getItem("pick") || 1;
+
+function save(){
+localStorage.setItem("minex",minex);
+localStorage.setItem("wallet",wallet);
+localStorage.setItem("energy",energy);
+localStorage.setItem("pick",pick);
+}
+
+function update(){
+document.getElementById("minex").innerText = minex;
+document.getElementById("wallet").innerText = wallet;
+document.getElementById("energy").innerText = energy;
+document.getElementById("pick").innerText = pick;
+save();
+}
+
+function log(text){
+document.getElementById("log").innerText = text;
+}
+
+function mine(){
+if(energy <= 0){
+log("❌ Sin energía");
+return;
+}
+
+energy--;
+
+let r = Math.random()*100;
+
+if(r > 95){
+minex += 120 * pick;
+log("💎 ¡Diamante legendario!");
+}
+else if(r > 75){
+minex += 40 * pick;
+log("🥇 Oro encontrado");
+}
+else{
+minex += 10 * pick;
+log("🪨 Piedra común");
+}
+
+update();
+}
+
+function upgrade(){
+if(minex >= 500){
+minex -= 500;
+pick++;
+log("🔧 Pico mejorado");
+update();
+}else{
+log("❌ No tienes MINEX suficiente");
+}
+}
+
+function convert(){
+if(minex >= 1000){
+minex -= 1000;
+wallet++;
+log("💰 Convertido a wallet");
+update();
+}else{
+log("❌ No tienes MINEX suficiente");
+}
+}
+
+function redeem(){
+if(wallet >= 10){
+wallet -= 10;
+log("🎁 Canje solicitado");
+update();
+}else{
+log("❌ Necesitas 10 wallet");
+}
+}
+
+function energy(){
+energy = 100;
+log("⚡ Energía restaurada");
+update();
+}
+
+update();
+
+</script>
+
+</body>
+</html>
